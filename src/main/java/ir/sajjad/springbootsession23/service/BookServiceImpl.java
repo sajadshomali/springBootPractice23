@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,16 @@ public class BookServiceImpl implements BookService {
                         .name(book.getName())
                         .price(book.getPrice())
                         .build());
+    }
+
+    @Override
+    public List<BookResponse> findByName(String name) {
+      return bookRepository.findByNameAsList(name).stream().map((book)->
+                new BookResponse().builder()
+                        .name(book.getName())
+                        .id(book.getId())
+                        .price(book.getPrice())
+                        .build()).toList();
     }
 
     private BookResponse mapBookToBookResponse(Book book){

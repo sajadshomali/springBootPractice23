@@ -5,11 +5,13 @@ public class BookResponse {
     private String name;
     private long price;
 
-    public BookResponse(Long id,String name, long price) {
-        this.id= id;
+    public BookResponse(Long id, String name, long price) {
+        this.id = id;
         this.name = name;
         this.price = price;
     }
+
+    public BookResponse(){}
 
     public String getName() {
         return name;

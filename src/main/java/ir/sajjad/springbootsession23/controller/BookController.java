@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -27,6 +29,11 @@ public class BookController {
     @GetMapping("/list")
     public ResponseEntity<Page<BookResponse>>showBookList(Pageable pageable){
       return ResponseEntity.ok(bookService.findAll(pageable));
+    }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<List<BookResponse>> searchBookByName(@PathVariable String name){
+        return ResponseEntity.ok(bookService.findByName(name));
     }
 
 }
