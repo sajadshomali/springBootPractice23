@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document</title>
+</head>
+<body>
+<p>Register page</p>
+<span th:if="${errorMassage != null}" th:text="${errorMassage}" />
+
+<form method="post" th:action="@{/login/register}" >
+  username:<input type="text" name="username">
+  <br>
+  password:<input type="password" name="password">
+  <br>
+  <input type="submit" value="register">
+</form>
+</body>
+</html>
