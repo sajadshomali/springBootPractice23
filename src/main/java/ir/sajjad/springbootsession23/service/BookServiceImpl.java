@@ -50,6 +50,12 @@ public class BookServiceImpl implements BookService {
                         .build()).toList();
     }
 
+    @Override
+    public BookResponse findById(long id) {
+        return mapBookToBookResponse(bookRepository.findById(id).orElseThrow(
+                 ()->new MyRuleException("Book.not.found")));
+    }
+
     private BookResponse mapBookToBookResponse(Book book){
         return new BookResponse.Builder()
                 .id(book.getId())

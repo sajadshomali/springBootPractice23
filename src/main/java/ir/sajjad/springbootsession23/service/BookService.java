@@ -15,4 +15,5 @@ public interface BookService{
 
    List<BookResponse> findByName(String name);
 
+    BookResponse findById(long id);
 }
