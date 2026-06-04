@@ -8,7 +8,9 @@ import ir.sajjad.springbootsession23.repository.BookRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,15 +26,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookResponse save(BookRequest bookRequest) {
         Optional<Book> book = bookRepository.findByName(bookRequest.getName());
-       if (book.isPresent()){
-           throw new MyRuleException("Book.is.exist");
-       }
+        if (book.isPresent()) {
+            throw new MyRuleException("Book.is.exist");
+        }
         return mapBookToBookResponse(bookRepository.save(mapBookRequestToBook(bookRequest)));
     }
 
     @Override
     public Page<BookResponse> findAll(Pageable pageable) {
-        return bookRepository.findAll(pageable).map((book)->
+        return bookRepository.findAll(pageable).map((book) ->
                 new BookResponse.Builder()
                         .id(book.getId())
                         .name(book.getName())
@@ -42,7 +44,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookResponse> findByName(String name) {
-      return bookRepository.findByNameAsList(name).stream().map((book)->
+        return bookRepository.findByNameAsList(name).stream().map((book) ->
                 new BookResponse().builder()
                         .name(book.getName())
                         .id(book.getId())
@@ -53,10 +55,22 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookResponse findById(long id) {
         return mapBookToBookResponse(bookRepository.findById(id).orElseThrow(
-                 ()->new MyRuleException("Book.not.found")));
+                () -> new MyRuleException("Book.not.found")));
     }
 
-    private BookResponse mapBookToBookResponse(Book book){
+    @Override
+    @Transactional
+    public void delete(Long id) {
+       Book byId = findByIdReturnBook(id);
+       // byId.setDeleted(LocalDateTime.now());
+        bookRepository.delete(byId);
+    }
+
+    private Book findByIdReturnBook(long id) {
+        return bookRepository.findById(id).orElseThrow(() -> new MyRuleException("Book.not.found"));
+    }
+
+    private BookResponse mapBookToBookResponse(Book book) {
         return new BookResponse.Builder()
                 .id(book.getId())
                 .name(book.getName())
@@ -64,7 +78,7 @@ public class BookServiceImpl implements BookService {
                 .build();
     }
 
-    private Book mapBookRequestToBook(BookRequest bookRequest){
+    private Book mapBookRequestToBook(BookRequest bookRequest) {
         return new Book.Build()
                 .name(bookRequest.getName())
                 .price(bookRequest.getPrice())

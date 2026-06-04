@@ -73,6 +73,10 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <version>4.0.0-RC2</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

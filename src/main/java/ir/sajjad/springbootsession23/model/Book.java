@@ -4,12 +4,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DialectOverride;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(schema = SchemaName.schemaName)
+@SQLDelete(sql = "update library.book set deleted= now() where id=?")
+@SQLRestriction("deleted is null")
 public class Book extends BaseEntity {
     private String name;
     private long price;
+
 
     public Book(String name, long price) {
         this.name = name;
@@ -17,6 +26,7 @@ public class Book extends BaseEntity {
     }
 
     public Book(){}
+
 
     public String getName() {
         return name;

@@ -4,6 +4,7 @@ import ir.sajjad.springbootsession23.dto.request.BookRequest;
 import ir.sajjad.springbootsession23.dto.response.BookResponse;
 import ir.sajjad.springbootsession23.service.BookService;
 import jakarta.validation.Valid;
+import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +40,11 @@ public class BookController {
     @GetMapping("findbyid/{id}")
     public ResponseEntity<BookResponse> findBookById(@PathVariable long id){
         return ResponseEntity.ok(bookService.findById(id));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable long id){
+        bookService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }
